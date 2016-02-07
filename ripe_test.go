@@ -1,29 +1,11 @@
 package ripego
 
 import (
-	"log"
-	_ "log"
 	"testing"
 )
 
-func TestTcpContent(t *testing.T) {
-
-	d, err := GetTcpContent("178.18.196.250", "whois.ripe.net")
-
-	if err != nil {
-		t.Fatal(err.Error())
-	}
-
-	if d == "" {
-		t.Fatal("TCP data obtained")
-	}
-
-	log.Println(d)
-}
-
-func TestRipeWhoisData(t *testing.T) {
-
-	RSPDATA := `% This is the RIPE Database query service.
+const (
+	RSPDATA = `% This is the RIPE Database query service.
 % The objects are in RPSL format.
 %
 % The RIPE Database is subject to Terms and Conditions.
@@ -95,8 +77,74 @@ last-modified:  2015-01-07T21:30:22Z
 source:         RIPE # Filtered
 
 % This query was served by the RIPE Database Query Service version 1.85.1 (DB-3)`
+)
 
-	//RSPL parse yazılabilir.
-	//Mevcut bir RSPL parser kullanılabilir.
-	//Daha kolay bir yol bulunabilir. bul.
+/*
+func TestTcpContent(t *testing.T) {
+
+	d, err := GetTcpContent("178.18.196.250", "whois.ripe.net")
+
+	if err != nil {
+		t.Fatal(err.Error())
+	}
+
+	if d == "" {
+		t.Fatal("TCP data obtained")
+	}
+}*/
+
+func TestRipeWhoisData(t *testing.T) {
+
+	var r = new(Ripe)
+	_, err := r.ParseData(RSPDATA)
+
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestReadLineValue(t *testing.T) {
+
+	line1 := "inetnum:      178.18.192.0 - 178.18.207.255"
+
+	var r = new(Ripe)
+	va1 := r.readValueFromLine(line1)
+
+	if va1 == "" {
+		t.Fatal("Value cannot be determined")
+	}
+
+	if va1 != "178.18.192.0 - 178.18.207.255" {
+		t.Fatalf("not expected data: %s", va1)
+	}
+
+	t.Log(va1)
+}
+
+func TestParseData(t *testing.T) {
+
+	var r = new(Ripe)
+	winfo, err := r.ParseData(RSPDATA)
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if winfo.AdminC != "VT5050-RIPE" {
+		t.Fatalf("No expected inetnum data: %s", winfo.AdminC)
+	}
+
+	t.Logf("inetnum admin-c: ", winfo.AdminC)
+
+	if winfo.Person.Name != "Vargonen LIR Admin" {
+		t.Fatalf("No expected person data: %s", winfo.Person.Name)
+	}
+
+	t.Logf("person person: ", winfo.Person.Name)
+
+	if winfo.Route.Origin != "AS43391" {
+		t.Fatalf("No expected route data: %s", winfo.Route.Origin)
+	}
+
+	t.Logf("route origin: ", winfo.Route.Origin)
 }

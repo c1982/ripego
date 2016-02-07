@@ -13,12 +13,12 @@ type WhoisInfo struct {
 	Netname      string
 	Descr        string
 	Country      string
+	Organization string
 	AdminC       string
 	TechC        string
 	MntLower     string
 	Status       string
 	MntBy        string
-	MntDomains   string
 	Created      string
 	LastModified string
 	Source       string
@@ -28,7 +28,7 @@ type WhoisInfo struct {
 }
 
 type WhoisPerson struct {
-	Person       string
+	Name         string
 	Address      string
 	Phone        string
 	AbuseMailbox string
