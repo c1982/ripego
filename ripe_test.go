@@ -93,22 +93,11 @@ func TestTcpContent(t *testing.T) {
 	}
 }*/
 
-func TestRipeWhoisData(t *testing.T) {
-
-	var r = new(Ripe)
-	_, err := r.ParseData(RSPDATA)
-
-	if err != nil {
-		t.Fatal(err)
-	}
-}
-
 func TestReadLineValue(t *testing.T) {
 
 	line1 := "inetnum:      178.18.192.0 - 178.18.207.255"
 
-	var r = new(Ripe)
-	va1 := r.readValueFromLine(line1)
+	va1 := ParseRPSLine(line1)
 
 	if va1 == "" {
 		t.Fatal("Value cannot be determined")
@@ -124,11 +113,7 @@ func TestReadLineValue(t *testing.T) {
 func TestParseData(t *testing.T) {
 
 	var r = new(Ripe)
-	winfo, err := r.ParseData(RSPDATA)
-
-	if err != nil {
-		t.Fatal(err)
-	}
+	winfo := r.ParseData(RSPDATA)
 
 	if winfo.AdminC != "VT5050-RIPE" {
 		t.Fatalf("No expected inetnum data: %s", winfo.AdminC)

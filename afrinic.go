@@ -1,29 +1,18 @@
 package ripego
 
-import (
-	"strings"
-)
-
 const (
-	RIPE_WHOIS_SERVER = "whois.ripe.net"
+	AFRINIC_WHOIS_SERVER = "whois.afrinic.net"
 )
 
-type Ripe struct {
+type Afrinic struct {
 }
 
-func (r Ripe) Check(search string) (w WhoisInfo, err error) {
-	content, err := GetTcpContent(search, RIPE_WHOIS_SERVER)
+func (r Afrinic) Check(search string) (w WhoisInfo, err error) {
+	whoisData, err := GetTcpContent(search, AFRINIC_WHOIS_SERVER)
 
 	if err != nil {
 		return w, err
 	}
-
-	w = r.ParseData(content)
-
-	return w, err
-}
-
-func (r Ripe) ParseData(whoisData string) WhoisInfo {
 
 	wi := WhoisInfo{}
 	wi.Inetnum = ParseRPSLValue(whoisData, "inetnum", "inetnum")
@@ -62,18 +51,5 @@ func (r Ripe) ParseData(whoisData string) WhoisInfo {
 	wi.Person = p
 	wi.Route = rt
 
-	return wi
-}
-
-func (r Ripe) hasIP(ipaddr string) bool {
-
-	ips := []string{"141", "51"}
-
-	for i := range ips {
-		if strings.HasSuffix(ipaddr, ips[i]) {
-			return true
-		}
-	}
-
-	return false
+	return wi, err
 }
