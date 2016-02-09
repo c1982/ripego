@@ -31,3 +31,8 @@ func main() {
 	fmt.Println("Desc: " + w.Descr)
 }
 ```
+
+### İletişim
+
+aspsrc@gmail.com
+Oğuzhan
