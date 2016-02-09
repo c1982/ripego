@@ -10,10 +10,10 @@ import (
 )
 
 const (
-	RPSL_LINE_PATTERN = `(.+):\W+(.+)`
+	rpsl_line_pattern = `(.+):\W+(.+)`
 )
 
-func GetTcpContent(search string, host string) (s string, err error) {
+func getTcpContent(search string, host string) (s string, err error) {
 
 	conn, err := net.DialTimeout("tcp", net.JoinHostPort(host, "43"), time.Second*28)
 	defer conn.Close()
@@ -35,7 +35,7 @@ func GetTcpContent(search string, host string) (s string, err error) {
 	return s, err
 }
 
-func ParseRPSLValue(whoisText string, class string, section string) string {
+func parseRPSLValue(whoisText string, class string, section string) string {
 
 	var sectionValue = ""
 	var hasIn = false
@@ -52,7 +52,7 @@ func ParseRPSLValue(whoisText string, class string, section string) string {
 
 		if hasIn {
 			if strings.HasPrefix(line, section) {
-				sectionValue = ParseRPSLine(line)
+				sectionValue = parseRPSLine(line)
 				break
 			}
 		}
@@ -61,9 +61,9 @@ func ParseRPSLValue(whoisText string, class string, section string) string {
 	return sectionValue
 }
 
-func ParseRPSLine(whoisLine string) string {
+func parseRPSLine(whoisLine string) string {
 
-	rx, _ := regexp.Compile(RPSL_LINE_PATTERN)
+	rx, _ := regexp.Compile(rpsl_line_pattern)
 	s := rx.FindAllStringSubmatch(whoisLine, -1)
 
 	if len(s) >= 1 {
@@ -71,4 +71,29 @@ func ParseRPSLine(whoisLine string) string {
 	}
 
 	return ""
+}
+
+func isProviderIP(ipaddr string, ips []string) bool {
+
+	hasip := false
+	octet := firstOctec(ipaddr)
+
+	for i := range ips {
+		if octet == ips[i] {
+			hasip = true
+			break
+		}
+	}
+
+	return hasip
+}
+
+func firstOctec(ipaddr string) string {
+	return strings.Split(ipaddr, ".")[0]
+}
+
+func isValidIp(ipaddr string) bool {
+	ip := net.ParseIP(ipaddr)
+
+	return ip.To4() != nil
 }
