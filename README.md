@@ -10,7 +10,7 @@ $ go get github.com/c1982/ripego
 
 ### Örnek Kullanım
 
-```golang
+```go
 package main
 
 import (
