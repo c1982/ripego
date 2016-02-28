@@ -24,6 +24,7 @@ func (r ripe) Check(search string) (w WhoisInfo, err error) {
 	wi.Source = parseRPSLValue(whoisData, "inetnum", "source")
 	wi.TechC = parseRPSLValue(whoisData, "inetnum", "tech-c")
 	wi.Organization = parseRPSLValue(whoisData, "inetnum", "org")
+	wi.Status = parseRPSLValue(whoisData, "inetnum", "status")
 
 	p := WhoisPerson{}
 	p.Name = parseRPSLValue(whoisData, "person", "person")
