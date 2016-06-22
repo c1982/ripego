@@ -50,6 +50,7 @@ func (r afrinic) Check(search string) (w WhoisInfo, err error) {
 	return wi, err
 }
 
+// hasIP function for derterming the right provider
 func (r afrinic) hasIP(ipaddr string) bool {
 	//http://www.iana.org/assignments/ipv4-address-space/ipv4-address-space.xhtml
 	ips := []string{"41", "102", "105", "154", "196", "197"}

@@ -3,12 +3,13 @@ package main
 import (
 	"fmt"
 	"log"
-	"ripego"
+
+	"github.com/c1982/ripego"
 )
 
 func main() {
 
-	w, err := ripego.IpLookup("178.18.196.250")
+	w, err := ripego.IPLookup("178.18.196.250")
 
 	if err != nil {
 		log.Fatal(err)

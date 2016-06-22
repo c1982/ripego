@@ -8,7 +8,7 @@ import (
 /*
 func TestWhois(t *testing.T) {
 
-	info, err := IpLookup("178.18.196.250")
+	info, err := IPLookup("178.18.196.250")
 
 	if err != nil {
 		t.Error(err)

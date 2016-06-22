@@ -22,9 +22,8 @@ func init() {
 	getNic["ripe"] = ripe{}
 }
 
-// IpLookup function that returns IP information at provider and returns information.
-// TODO: Change to IPLookup
-func IpLookup(ipaddr string) (w WhoisInfo, err error) {
+// IPLookup function that returns IP information at provider and returns information.
+func IPLookup(ipaddr string) (w WhoisInfo, err error) {
 
 	if !isValidIp(ipaddr) {
 		return w, errors.New("Invalid IPv4 address: " + ipaddr)

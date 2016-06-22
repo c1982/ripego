@@ -27,6 +27,7 @@ func (r arin) Check(search string) (w WhoisInfo, err error) {
 	return wi, err
 }
 
+// hasIP function for derterming the right provider
 func (r arin) hasIP(ipaddr string) bool {
 	//http://www.iana.org/assignments/ipv4-address-space/ipv4-address-space.xhtml
 	ips := []string{"3", "4", "6", "7", "8", "9", "11", "12", "13", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24",
