@@ -1,5 +1,6 @@
 package ripego
 
+// ripe struct
 type ripe struct {
 }
 
@@ -51,7 +52,8 @@ func (r ripe) Check(search string) (w WhoisInfo, err error) {
 	return wi, err
 }
 
-func (r ripe) hasIp(ipaddr string) bool {
+// hasIP function for derterming the right provider
+func (r ripe) hasIP(ipaddr string) bool {
 	//http://www.iana.org/assignments/ipv4-address-space/ipv4-address-space.xhtml
 	ips := []string{"2", "5", "25", "31", "37", "46", "51", "53", "57", "62",
 		"77", "78", "79", "80", "81", "82", "83", "84", "85", "86", "87", "88", "89",

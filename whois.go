@@ -22,6 +22,8 @@ func init() {
 	getNic["ripe"] = ripe{}
 }
 
+// IpLookup function that returns IP information at provider and returns information.
+// TODO: Change to IPLookup
 func IpLookup(ipaddr string) (w WhoisInfo, err error) {
 
 	if !isValidIp(ipaddr) {
@@ -32,12 +34,13 @@ func IpLookup(ipaddr string) (w WhoisInfo, err error) {
 	return w, err
 }
 
+// GetNicProvider function that search for the right provider for the lookup.
 func getNicProvider(ipaddr string) Whois {
 
 	var d = getNic["ripe"]
 
 	for w := range getNic {
-		if getNic[w].hasIp(ipaddr) {
+		if getNic[w].hasIP(ipaddr) {
 			d = getNic[w]
 			break
 		}
@@ -46,11 +49,13 @@ func getNicProvider(ipaddr string) Whois {
 	return d
 }
 
+// Whois intercate containing the resulting infomration.
 type Whois interface {
 	Check(search string) (WhoisInfo, error)
-	hasIp(ipaddr string) bool
+	hasIP(ipaddr string) bool
 }
 
+// WhoisInfo struct with information on IP address range.
 type WhoisInfo struct {
 	Inetnum      string
 	Netname      string
@@ -70,6 +75,7 @@ type WhoisInfo struct {
 	Route        WhoisRoute
 }
 
+// WhoisPerson struct for Person information from provider.
 type WhoisPerson struct {
 	Name         string
 	Address      string
@@ -82,6 +88,7 @@ type WhoisPerson struct {
 	Source       string
 }
 
+// WhoisRoute struct for Route and Network information from provider.
 type WhoisRoute struct {
 	Route        string
 	Descr        string

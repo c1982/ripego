@@ -39,7 +39,7 @@ func (r lacnic) Check(search string) (w WhoisInfo, err error) {
 	return wi, err
 }
 
-func (r lacnic) hasIp(ipaddr string) bool {
+func (r lacnic) hasIP(ipaddr string) bool {
 	//http://www.iana.org/assignments/ipv4-address-space/ipv4-address-space.xhtml
 	ips := []string{"177", "179", "181", "186", "187", "189", "190", "191", "200", "201"}
 

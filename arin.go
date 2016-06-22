@@ -27,8 +27,7 @@ func (r arin) Check(search string) (w WhoisInfo, err error) {
 	return wi, err
 }
 
-func (r arin) hasIp(ipaddr string) bool {
-
+func (r arin) hasIP(ipaddr string) bool {
 	//http://www.iana.org/assignments/ipv4-address-space/ipv4-address-space.xhtml
 	ips := []string{"3", "4", "6", "7", "8", "9", "11", "12", "13", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24",
 		"26", "28", "29", "30", "32", "33", "34", "35", "38", "40", "44", "45", "47", "48", "50", "52", "54", "55", "56", "63",

@@ -39,8 +39,8 @@ func (r apnic) Check(search string) (w WhoisInfo, err error) {
 	return wi, err
 }
 
-func (r apnic) hasIp(ipaddr string) bool {
-
+// hasIP function for derterming the right provider
+func (r apnic) hasIP(ipaddr string) bool {
 	//http://www.iana.org/assignments/ipv4-address-space/ipv4-address-space.xhtml
 	ips := []string{"1", "14", "27", "36", "39", "42", "49", "49", "58", "59",
 		"60", "61", "101", "103", "106", "110", "111", "112", "113", "114",
