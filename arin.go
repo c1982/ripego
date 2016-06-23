@@ -3,6 +3,30 @@ package ripego
 type arin struct {
 }
 
+func ArinCheck(search string) (w WhoisInfo, err error) {
+	whoisData, err := getTcpContent(search, arin_whois_server)
+
+	if err != nil {
+		return w, err
+	}
+
+	wi := WhoisInfo{}
+	wi.Inetnum = parseRPSLValue(whoisData, "NetRange", "NetRange")
+	wi.Netname = parseRPSLValue(whoisData, "NetRange", "NetName")
+	wi.Organization = parseRPSLValue(whoisData, "NetRange", "Organization")
+	wi.Created = parseRPSLValue(whoisData, "NetRange", "RegDate")
+	wi.LastModified = parseRPSLValue(whoisData, "NetRange", "Updated")
+	wi.Status = parseRPSLValue(whoisData, "NetRange", "NetType")
+
+	rt := WhoisRoute{}
+	rt.Origin = parseRPSLValue(whoisData, "NetRange", "OriginAS")
+	rt.Route = parseRPSLValue(whoisData, "NetRange", "CIDR")
+
+	wi.Route = rt
+
+	return wi, err
+}
+
 func (r arin) Check(search string) (w WhoisInfo, err error) {
 	whoisData, err := getTcpContent(search, arin_whois_server)
 

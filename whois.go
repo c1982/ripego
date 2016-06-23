@@ -2,6 +2,8 @@ package ripego
 
 import (
 	"errors"
+
+	"github.com/sebastianbroekhoven/go-get-ianawhois"
 )
 
 var getNic = make(map[string]Whois)
@@ -22,14 +24,53 @@ func init() {
 	getNic["ripe"] = ripe{}
 }
 
-// IPLookup function that returns IP information at provider and returns information.
-func IPLookup(ipaddr string) (w WhoisInfo, err error) {
-
+// IpLookup function for lagacy, not breaking stuff
+func IpLookup(ipaddr string) (w WhoisInfo, err error) {
 	if !isValidIp(ipaddr) {
 		return w, errors.New("Invalid IPv4 address: " + ipaddr)
 	}
 
 	w, err = getNicProvider(ipaddr).Check(ipaddr)
+	return w, err
+}
+
+// IPLookup function that returns IP information at provider and returns information.
+func IPLookup(ipaddr string) (w WhoisInfo, err error) {
+	if !isValidIp(ipaddr) {
+		return w, errors.New("Invalid IPv4 address: " + ipaddr)
+	}
+
+	w, err = getNicProvider(ipaddr).Check(ipaddr)
+	return w, err
+}
+
+// IPv4Lookup function that returns IP information at provider and returns information.
+func IPv4Lookup(ipaddr string) (w WhoisInfo, err error) {
+	if !isValidIp(ipaddr) {
+		return w, errors.New("Invalid IPv4 address: " + ipaddr)
+	}
+
+	resp, err := whois.Query(ipaddr)
+	if err != nil {
+		return w, errors.New("Query failed for: " + ipaddr)
+	}
+
+	server, org := whois.Server(resp)
+
+	if org == "afrinic" {
+		w, err = AfrinicCheck(ipaddr)
+	} else if org == "apnic" {
+		w, err = ApnicCheck(ipaddr)
+	} else if org == "arin" {
+		w, err = ArinCheck(ipaddr)
+	} else if org == "lacnic" {
+		w, err = LacnicCheck(ipaddr)
+	} else {
+		w, err = RipeCheck(ipaddr)
+	}
+
+	println(server)
+	// w, err = getNicProvider(ipaddr).Check(ipaddr)
 	return w, err
 }
 
