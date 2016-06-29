@@ -96,7 +96,7 @@ func IPv6Lookup(ipaddr string) (w WhoisInfo, err error) {
 	} else if org == "lacnic" {
 		w, err = LacnicCheck(ipaddr)
 	} else {
-		w, err = RipeCheck(ipaddr)
+		w, err = RipeCheck6(ipaddr)
 	}
 
 	println(server)
