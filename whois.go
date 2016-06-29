@@ -90,7 +90,7 @@ func IPv6Lookup(ipaddr string) (w WhoisInfo, err error) {
 	if org == "afrinic" {
 		w, err = AfrinicCheck(ipaddr)
 	} else if org == "apnic" {
-		w, err = ApnicCheck(ipaddr)
+		w, err = ApnicCheck6(ipaddr)
 	} else if org == "arin" {
 		w, err = ArinCheck(ipaddr)
 	} else if org == "lacnic" {
