@@ -97,3 +97,9 @@ func isValidIp(ipaddr string) bool {
 
 	return ip.To4() != nil
 }
+
+func isValidIPv6(ipaddr string) bool {
+	ip := net.ParseIP(ipaddr)
+
+	return ip.To16() != nil
+}

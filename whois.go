@@ -74,6 +74,36 @@ func IPv4Lookup(ipaddr string) (w WhoisInfo, err error) {
 	return w, err
 }
 
+// IPv6Lookup function that returns IP information at provider and returns information.
+func IPv6Lookup(ipaddr string) (w WhoisInfo, err error) {
+	if !isValidIPv6(ipaddr) {
+		return w, errors.New("Invalid IPv6 address: " + ipaddr)
+	}
+
+	resp, err := whois.Query(ipaddr)
+	if err != nil {
+		return w, errors.New("Query failed for: " + ipaddr)
+	}
+
+	server, org := whois.Server(resp)
+
+	if org == "afrinic" {
+		w, err = AfrinicCheck(ipaddr)
+	} else if org == "apnic" {
+		w, err = ApnicCheck(ipaddr)
+	} else if org == "arin" {
+		w, err = ArinCheck(ipaddr)
+	} else if org == "lacnic" {
+		w, err = LacnicCheck(ipaddr)
+	} else {
+		w, err = RipeCheck(ipaddr)
+	}
+
+	println(server)
+	// w, err = getNicProvider(ipaddr).Check(ipaddr)
+	return w, err
+}
+
 // GetNicProvider function that search for the right provider for the lookup.
 func getNicProvider(ipaddr string) Whois {
 
