@@ -3,6 +3,30 @@ package ripego
 type arin struct {
 }
 
+func ArinCheck(search string) (w WhoisInfo, err error) {
+	whoisData, err := getTcpContent(search, arin_whois_server)
+
+	if err != nil {
+		return w, err
+	}
+
+	wi := WhoisInfo{}
+	wi.Inetnum = parseRPSLValue(whoisData, "NetRange", "NetRange")
+	wi.Netname = parseRPSLValue(whoisData, "NetRange", "NetName")
+	wi.Organization = parseRPSLValue(whoisData, "NetRange", "Organization")
+	wi.Created = parseRPSLValue(whoisData, "NetRange", "RegDate")
+	wi.LastModified = parseRPSLValue(whoisData, "NetRange", "Updated")
+	wi.Status = parseRPSLValue(whoisData, "NetRange", "NetType")
+
+	rt := WhoisRoute{}
+	rt.Origin = parseRPSLValue(whoisData, "NetRange", "OriginAS")
+	rt.Route = parseRPSLValue(whoisData, "NetRange", "CIDR")
+
+	wi.Route = rt
+
+	return wi, err
+}
+
 func (r arin) Check(search string) (w WhoisInfo, err error) {
 	whoisData, err := getTcpContent(search, arin_whois_server)
 
@@ -27,8 +51,8 @@ func (r arin) Check(search string) (w WhoisInfo, err error) {
 	return wi, err
 }
 
-func (r arin) hasIp(ipaddr string) bool {
-
+// hasIP function for derterming the right provider
+func (r arin) hasIP(ipaddr string) bool {
 	//http://www.iana.org/assignments/ipv4-address-space/ipv4-address-space.xhtml
 	ips := []string{"3", "4", "6", "7", "8", "9", "11", "12", "13", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24",
 		"26", "28", "29", "30", "32", "33", "34", "35", "38", "40", "44", "45", "47", "48", "50", "52", "54", "55", "56", "63",
